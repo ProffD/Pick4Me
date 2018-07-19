@@ -18,9 +18,13 @@ namespace Pick4Me {
 		QuickPick(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			this->StartPosition = FormStartPosition::CenterScreen;
+			numNumber->Minimum = 1;
+			numNumber->Maximum = 10;
+			numLetters->Minimum = 1;
+			numLetters->Maximum = 10;
+			rbNumbers->Checked = true;
+
 		}
 
 	protected:
@@ -34,30 +38,43 @@ namespace Pick4Me {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::GroupBox^  gbLetters;
 	protected:
 
-	private: System::Windows::Forms::GroupBox^  groupBox3;
-	private: System::Windows::Forms::RadioButton^  radioButton1;
-	private: System::Windows::Forms::RadioButton^  radioButton2;
+	private: System::Windows::Forms::GroupBox^  gbNumbers;
+	protected:
+
+
+	private: System::Windows::Forms::RadioButton^  rbNumbers;
+	private: System::Windows::Forms::RadioButton^  rbLetters;
+
+
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::CheckBox^  chDupNumbers;
 
 
 
-	private: System::Windows::Forms::CheckBox^  checkBox1;
-	private: System::Windows::Forms::NumericUpDown^  numericUpDown3;
-	private: System::Windows::Forms::NumericUpDown^  numericUpDown2;
-	private: System::Windows::Forms::NumericUpDown^  numericUpDown1;
+
+	private: System::Windows::Forms::NumericUpDown^  numEndNumber;
+
+	private: System::Windows::Forms::NumericUpDown^  numStartNumber;
+
+	private: System::Windows::Forms::NumericUpDown^  numNumber;
+
 	private: System::Windows::Forms::Label^  label10;
 	private: System::Windows::Forms::Label^  label9;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::ComboBox^  comboBox2;
-	private: System::Windows::Forms::ComboBox^  comboBox1;
-	private: System::Windows::Forms::CheckBox^  checkBox2;
-	private: System::Windows::Forms::NumericUpDown^  numericUpDown4;
+	private: System::Windows::Forms::ComboBox^  cmbEnd;
+
+	private: System::Windows::Forms::ComboBox^  cmbStart;
+	private: System::Windows::Forms::CheckBox^  chDupLetters;
+
+
+	private: System::Windows::Forms::NumericUpDown^  numLetters;
+
 	private: System::Windows::Forms::Label^  label13;
 	private: System::Windows::Forms::Label^  label12;
 	private: System::Windows::Forms::Label^  label11;
@@ -73,6 +90,12 @@ namespace Pick4Me {
 
 
 	private:
+		int noOfNumbers;
+		int startNum;
+		int endNum;
+		String^ startL;
+		String^ endL;
+
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -86,27 +109,27 @@ namespace Pick4Me {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(QuickPick::typeid));
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->comboBox2 = (gcnew System::Windows::Forms::ComboBox());
-			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
-			this->checkBox2 = (gcnew System::Windows::Forms::CheckBox());
-			this->numericUpDown4 = (gcnew System::Windows::Forms::NumericUpDown());
+			this->gbLetters = (gcnew System::Windows::Forms::GroupBox());
+			this->cmbEnd = (gcnew System::Windows::Forms::ComboBox());
+			this->cmbStart = (gcnew System::Windows::Forms::ComboBox());
+			this->chDupLetters = (gcnew System::Windows::Forms::CheckBox());
+			this->numLetters = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->groupBox3 = (gcnew System::Windows::Forms::GroupBox());
-			this->checkBox1 = (gcnew System::Windows::Forms::CheckBox());
-			this->numericUpDown3 = (gcnew System::Windows::Forms::NumericUpDown());
-			this->numericUpDown2 = (gcnew System::Windows::Forms::NumericUpDown());
-			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
+			this->gbNumbers = (gcnew System::Windows::Forms::GroupBox());
+			this->chDupNumbers = (gcnew System::Windows::Forms::CheckBox());
+			this->numEndNumber = (gcnew System::Windows::Forms::NumericUpDown());
+			this->numStartNumber = (gcnew System::Windows::Forms::NumericUpDown());
+			this->numNumber = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label10 = (gcnew System::Windows::Forms::Label());
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->rbNumbers = (gcnew System::Windows::Forms::RadioButton());
+			this->rbLetters = (gcnew System::Windows::Forms::RadioButton());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
@@ -116,66 +139,76 @@ namespace Pick4Me {
 			this->txtResults = (gcnew System::Windows::Forms::TextBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->groupBox1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown4))->BeginInit();
-			this->groupBox3->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown3))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown2))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
+			this->gbLetters->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numLetters))->BeginInit();
+			this->gbNumbers->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numEndNumber))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numStartNumber))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numNumber))->BeginInit();
 			this->groupBox2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// groupBox1
+			// gbLetters
 			// 
-			this->groupBox1->Controls->Add(this->comboBox2);
-			this->groupBox1->Controls->Add(this->comboBox1);
-			this->groupBox1->Controls->Add(this->checkBox2);
-			this->groupBox1->Controls->Add(this->numericUpDown4);
-			this->groupBox1->Controls->Add(this->label13);
-			this->groupBox1->Controls->Add(this->label12);
-			this->groupBox1->Controls->Add(this->label11);
-			this->groupBox1->Controls->Add(this->label5);
-			this->groupBox1->Controls->Add(this->label4);
-			this->groupBox1->Location = System::Drawing::Point(248, 126);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(233, 119);
-			this->groupBox1->TabIndex = 0;
-			this->groupBox1->TabStop = false;
+			this->gbLetters->Controls->Add(this->cmbEnd);
+			this->gbLetters->Controls->Add(this->cmbStart);
+			this->gbLetters->Controls->Add(this->chDupLetters);
+			this->gbLetters->Controls->Add(this->numLetters);
+			this->gbLetters->Controls->Add(this->label13);
+			this->gbLetters->Controls->Add(this->label12);
+			this->gbLetters->Controls->Add(this->label11);
+			this->gbLetters->Controls->Add(this->label5);
+			this->gbLetters->Controls->Add(this->label4);
+			this->gbLetters->Location = System::Drawing::Point(248, 126);
+			this->gbLetters->Name = L"gbLetters";
+			this->gbLetters->Size = System::Drawing::Size(233, 119);
+			this->gbLetters->TabIndex = 0;
+			this->gbLetters->TabStop = false;
 			// 
-			// comboBox2
+			// cmbEnd
 			// 
-			this->comboBox2->FormattingEnabled = true;
-			this->comboBox2->Location = System::Drawing::Point(142, 63);
-			this->comboBox2->Name = L"comboBox2";
-			this->comboBox2->Size = System::Drawing::Size(63, 21);
-			this->comboBox2->TabIndex = 15;
+			this->cmbEnd->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->cmbEnd->FormattingEnabled = true;
+			this->cmbEnd->Items->AddRange(gcnew cli::array< System::Object^  >(25) {
+				L"A", L"B", L"C", L"D", L"E", L"F", L"G", L"H", L"I",
+					L"J", L"K", L"L", L"M", L"N", L"O", L"P", L"Q", L"R", L"S", L"T", L"U", L"V", L"X", L"Y", L"Z"
+			});
+			this->cmbEnd->Location = System::Drawing::Point(142, 63);
+			this->cmbEnd->Name = L"cmbEnd";
+			this->cmbEnd->Size = System::Drawing::Size(63, 21);
+			this->cmbEnd->TabIndex = 15;
 			// 
-			// comboBox1
+			// cmbStart
 			// 
-			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Location = System::Drawing::Point(142, 39);
-			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(63, 21);
-			this->comboBox1->TabIndex = 14;
+			this->cmbStart->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->cmbStart->FormattingEnabled = true;
+			this->cmbStart->Items->AddRange(gcnew cli::array< System::Object^  >(25) {
+				L"A", L"B", L"C", L"D", L"E", L"F", L"G", L"H",
+					L"I", L"J", L"K", L"L", L"M", L"N", L"O", L"P", L"Q", L"R", L"S", L"T", L"U", L"V", L"X", L"Y", L"Z"
+			});
+			this->cmbStart->Location = System::Drawing::Point(142, 39);
+			this->cmbStart->Name = L"cmbStart";
+			this->cmbStart->Size = System::Drawing::Size(63, 21);
+			this->cmbStart->TabIndex = 14;
 			// 
-			// checkBox2
+			// chDupLetters
 			// 
-			this->checkBox2->AutoSize = true;
-			this->checkBox2->Location = System::Drawing::Point(142, 89);
-			this->checkBox2->Name = L"checkBox2";
-			this->checkBox2->Size = System::Drawing::Size(76, 17);
-			this->checkBox2->TabIndex = 13;
-			this->checkBox2->Text = L"Duplicates";
-			this->checkBox2->UseVisualStyleBackColor = true;
+			this->chDupLetters->AutoSize = true;
+			this->chDupLetters->Location = System::Drawing::Point(142, 89);
+			this->chDupLetters->Name = L"chDupLetters";
+			this->chDupLetters->Size = System::Drawing::Size(76, 17);
+			this->chDupLetters->TabIndex = 13;
+			this->chDupLetters->Text = L"Duplicates";
+			this->chDupLetters->UseVisualStyleBackColor = true;
 			// 
-			// numericUpDown4
+			// numLetters
 			// 
-			this->numericUpDown4->Location = System::Drawing::Point(142, 17);
-			this->numericUpDown4->Name = L"numericUpDown4";
-			this->numericUpDown4->Size = System::Drawing::Size(63, 20);
-			this->numericUpDown4->TabIndex = 12;
+			this->numLetters->Location = System::Drawing::Point(142, 17);
+			this->numLetters->Name = L"numLetters";
+			this->numLetters->Size = System::Drawing::Size(63, 20);
+			this->numLetters->TabIndex = 12;
 			// 
 			// label13
 			// 
@@ -221,53 +254,53 @@ namespace Pick4Me {
 			this->label4->Size = System::Drawing::Size(0, 13);
 			this->label4->TabIndex = 5;
 			// 
-			// groupBox3
+			// gbNumbers
 			// 
-			this->groupBox3->Controls->Add(this->checkBox1);
-			this->groupBox3->Controls->Add(this->numericUpDown3);
-			this->groupBox3->Controls->Add(this->numericUpDown2);
-			this->groupBox3->Controls->Add(this->numericUpDown1);
-			this->groupBox3->Controls->Add(this->label10);
-			this->groupBox3->Controls->Add(this->label9);
-			this->groupBox3->Controls->Add(this->label3);
-			this->groupBox3->Controls->Add(this->label2);
-			this->groupBox3->Location = System::Drawing::Point(26, 126);
-			this->groupBox3->Name = L"groupBox3";
-			this->groupBox3->Size = System::Drawing::Size(216, 119);
-			this->groupBox3->TabIndex = 1;
-			this->groupBox3->TabStop = false;
-			this->groupBox3->Enter += gcnew System::EventHandler(this, &QuickPick::groupBox3_Enter);
+			this->gbNumbers->Controls->Add(this->chDupNumbers);
+			this->gbNumbers->Controls->Add(this->numEndNumber);
+			this->gbNumbers->Controls->Add(this->numStartNumber);
+			this->gbNumbers->Controls->Add(this->numNumber);
+			this->gbNumbers->Controls->Add(this->label10);
+			this->gbNumbers->Controls->Add(this->label9);
+			this->gbNumbers->Controls->Add(this->label3);
+			this->gbNumbers->Controls->Add(this->label2);
+			this->gbNumbers->Location = System::Drawing::Point(26, 126);
+			this->gbNumbers->Name = L"gbNumbers";
+			this->gbNumbers->Size = System::Drawing::Size(216, 119);
+			this->gbNumbers->TabIndex = 1;
+			this->gbNumbers->TabStop = false;
+			this->gbNumbers->Enter += gcnew System::EventHandler(this, &QuickPick::groupBox3_Enter);
 			// 
-			// checkBox1
+			// chDupNumbers
 			// 
-			this->checkBox1->AutoSize = true;
-			this->checkBox1->Location = System::Drawing::Point(126, 90);
-			this->checkBox1->Name = L"checkBox1";
-			this->checkBox1->Size = System::Drawing::Size(76, 17);
-			this->checkBox1->TabIndex = 12;
-			this->checkBox1->Text = L"Duplicates";
-			this->checkBox1->UseVisualStyleBackColor = true;
+			this->chDupNumbers->AutoSize = true;
+			this->chDupNumbers->Location = System::Drawing::Point(126, 90);
+			this->chDupNumbers->Name = L"chDupNumbers";
+			this->chDupNumbers->Size = System::Drawing::Size(76, 17);
+			this->chDupNumbers->TabIndex = 12;
+			this->chDupNumbers->Text = L"Duplicates";
+			this->chDupNumbers->UseVisualStyleBackColor = true;
 			// 
-			// numericUpDown3
+			// numEndNumber
 			// 
-			this->numericUpDown3->Location = System::Drawing::Point(126, 63);
-			this->numericUpDown3->Name = L"numericUpDown3";
-			this->numericUpDown3->Size = System::Drawing::Size(63, 20);
-			this->numericUpDown3->TabIndex = 11;
+			this->numEndNumber->Location = System::Drawing::Point(126, 63);
+			this->numEndNumber->Name = L"numEndNumber";
+			this->numEndNumber->Size = System::Drawing::Size(63, 20);
+			this->numEndNumber->TabIndex = 11;
 			// 
-			// numericUpDown2
+			// numStartNumber
 			// 
-			this->numericUpDown2->Location = System::Drawing::Point(126, 39);
-			this->numericUpDown2->Name = L"numericUpDown2";
-			this->numericUpDown2->Size = System::Drawing::Size(63, 20);
-			this->numericUpDown2->TabIndex = 10;
+			this->numStartNumber->Location = System::Drawing::Point(126, 39);
+			this->numStartNumber->Name = L"numStartNumber";
+			this->numStartNumber->Size = System::Drawing::Size(63, 20);
+			this->numStartNumber->TabIndex = 10;
 			// 
-			// numericUpDown1
+			// numNumber
 			// 
-			this->numericUpDown1->Location = System::Drawing::Point(126, 17);
-			this->numericUpDown1->Name = L"numericUpDown1";
-			this->numericUpDown1->Size = System::Drawing::Size(63, 20);
-			this->numericUpDown1->TabIndex = 9;
+			this->numNumber->Location = System::Drawing::Point(126, 17);
+			this->numNumber->Name = L"numNumber";
+			this->numNumber->Size = System::Drawing::Size(63, 20);
+			this->numNumber->TabIndex = 9;
 			// 
 			// label10
 			// 
@@ -305,27 +338,29 @@ namespace Pick4Me {
 			this->label2->TabIndex = 5;
 			this->label2->Text = L"Start From :";
 			// 
-			// radioButton1
+			// rbNumbers
 			// 
-			this->radioButton1->AutoSize = true;
-			this->radioButton1->Location = System::Drawing::Point(139, 103);
-			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(103, 17);
-			this->radioButton1->TabIndex = 2;
-			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"Numbers 1234...";
-			this->radioButton1->UseVisualStyleBackColor = true;
+			this->rbNumbers->AutoSize = true;
+			this->rbNumbers->Location = System::Drawing::Point(139, 103);
+			this->rbNumbers->Name = L"rbNumbers";
+			this->rbNumbers->Size = System::Drawing::Size(103, 17);
+			this->rbNumbers->TabIndex = 2;
+			this->rbNumbers->TabStop = true;
+			this->rbNumbers->Text = L"Numbers 1234...";
+			this->rbNumbers->UseVisualStyleBackColor = true;
+			this->rbNumbers->CheckedChanged += gcnew System::EventHandler(this, &QuickPick::rbNumbers_CheckedChanged);
 			// 
-			// radioButton2
+			// rbLetters
 			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(379, 103);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(102, 17);
-			this->radioButton2->TabIndex = 3;
-			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Alphabet ABcd..";
-			this->radioButton2->UseVisualStyleBackColor = true;
+			this->rbLetters->AutoSize = true;
+			this->rbLetters->Location = System::Drawing::Point(379, 103);
+			this->rbLetters->Name = L"rbLetters";
+			this->rbLetters->Size = System::Drawing::Size(102, 17);
+			this->rbLetters->TabIndex = 3;
+			this->rbLetters->TabStop = true;
+			this->rbLetters->Text = L"Alphabet ABcd..";
+			this->rbLetters->UseVisualStyleBackColor = true;
+			this->rbLetters->CheckedChanged += gcnew System::EventHandler(this, &QuickPick::rbLetters_CheckedChanged);
 			// 
 			// label1
 			// 
@@ -382,6 +417,9 @@ namespace Pick4Me {
 			// 
 			// dateTimePicker1
 			// 
+			this->dateTimePicker1->CustomFormat = L"ddMMMyyyy hh:mm";
+			this->dateTimePicker1->Enabled = false;
+			this->dateTimePicker1->Format = System::Windows::Forms::DateTimePickerFormat::Custom;
 			this->dateTimePicker1->Location = System::Drawing::Point(136, 54);
 			this->dateTimePicker1->Name = L"dateTimePicker1";
 			this->dateTimePicker1->Size = System::Drawing::Size(198, 20);
@@ -424,25 +462,25 @@ namespace Pick4Me {
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->radioButton2);
-			this->Controls->Add(this->radioButton1);
-			this->Controls->Add(this->groupBox3);
+			this->Controls->Add(this->rbLetters);
+			this->Controls->Add(this->rbNumbers);
+			this->Controls->Add(this->gbNumbers);
 			this->Controls->Add(this->groupBox2);
-			this->Controls->Add(this->groupBox1);
+			this->Controls->Add(this->gbLetters);
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"QuickPick";
 			this->Text = L"QuickPick";
 			this->Load += gcnew System::EventHandler(this, &QuickPick::QuickPick_Load);
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown4))->EndInit();
-			this->groupBox3->ResumeLayout(false);
-			this->groupBox3->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown3))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown2))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
+			this->gbLetters->ResumeLayout(false);
+			this->gbLetters->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numLetters))->EndInit();
+			this->gbNumbers->ResumeLayout(false);
+			this->gbNumbers->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numEndNumber))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numStartNumber))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numNumber))->EndInit();
 			this->groupBox2->ResumeLayout(false);
 			this->groupBox2->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -457,8 +495,44 @@ namespace Pick4Me {
 private: System::Void groupBox2_Enter(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void txtResults_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+
 }
 private: System::Void QuickPick_Load(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void rbNumbers_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	
+	if (rbNumbers->Checked == true)
+	{
+
+		numStartNumber->Value = numStartNumber->Minimum;
+		numEndNumber->Value = numEndNumber->Maximum;		
+		gbNumbers->Enabled = true;
+		gbLetters->Enabled = false;
+		chDupNumbers->Checked = false;
+
+		numLetters->Value = numLetters->Minimum;
+		cmbStart->SelectedIndex = -1;
+		cmbEnd->SelectedIndex = -1;
+		txtResults->Clear();
+		
+
+	}
+
+}      
+private: System::Void rbLetters_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	if (rbLetters->Checked == true)
+	{
+		
+		gbNumbers->Enabled = false;
+		gbLetters->Enabled = true;
+		chDupLetters->Checked = false;
+
+
+		numNumber->Value = numNumber->Minimum;
+		numStartNumber->Value = numStartNumber->Minimum;
+		numEndNumber->Value = numEndNumber->Maximum;
+		txtResults->Clear();
+	}
 }
 };
 }
