@@ -2,7 +2,7 @@
 //
 // Copyright (C) 2018 Tshenolo Matome::ProffD
 //
-// Distributed under the His_Softworks Software License, Version 1.0.
+// Distributed under the His_Softworks Software License, Version 1.1.0.
 // Copying or duplicating this application is prohibited!.
 
 #include "QuickPick.h"

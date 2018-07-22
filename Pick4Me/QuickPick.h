@@ -1,4 +1,10 @@
 #pragma once
+#include<cliext/algorithm>
+#include<cliext/vector>
+#include<cliext/numeric>
+#include<cliext/functional>
+#include<random>
+#include<chrono>
 
 namespace Pick4Me {
 
@@ -26,6 +32,8 @@ namespace Pick4Me {
 			rbNumbers->Checked = true;
 
 		}
+		
+		
 
 	protected:
 		/// <summary>
@@ -91,10 +99,15 @@ namespace Pick4Me {
 
 	private:
 		int noOfNumbers;
+		int noOfLetters;
 		int startNum;
 		int endNum;
+		int randNumber;
 		String^ startL;
 		String^ endL;
+		cliext::vector<int> numbers;
+		cliext::vector<int> letters;
+
 
 		/// <summary>
 		/// Required designer variable.
@@ -414,6 +427,7 @@ namespace Pick4Me {
 			this->btnGenerate->TabIndex = 10;
 			this->btnGenerate->Text = L"Generate";
 			this->btnGenerate->UseVisualStyleBackColor = true;
+			this->btnGenerate->Click += gcnew System::EventHandler(this, &QuickPick::btnGenerate_Click);
 			// 
 			// dateTimePicker1
 			// 
@@ -532,6 +546,106 @@ private: System::Void rbLetters_CheckedChanged(System::Object^  sender, System::
 		numStartNumber->Value = numStartNumber->Minimum;
 		numEndNumber->Value = numEndNumber->Maximum;
 		txtResults->Clear();
+	}
+}
+private: System::Void btnGenerate_Click(System::Object^  sender, System::EventArgs^  e) {
+	 
+	if (rbNumbers->Checked == true)
+	{
+		startNum = static_cast<int>(numStartNumber->Value);
+		endNum = static_cast<int>(numEndNumber->Value);
+		noOfNumbers = static_cast<int>(numNumber->Value);
+		numbers.clear();
+		numbers.erase(remove(numbers.begin(), numbers.end(), 0), numbers.end());
+		numbers.resize(noOfNumbers);
+		txtResults->Clear();
+		auto seed(std::chrono::system_clock::now().time_since_epoch().count());
+		std::mt19937 gen(seed);
+		if (startNum < endNum)
+		{
+			std::uniform_int_distribution<> dist(startNum, endNum);
+
+			for (int i = 0; i < noOfNumbers; i++) {
+				if (chDupNumbers->Checked == true) {
+					randNumber = dist(gen);
+					numbers[i] = randNumber;
+					txtResults->AppendText(numbers[i].ToString());
+					txtResults->AppendText("  ");
+				}
+				else
+				{
+
+					if (noOfNumbers <= endNum && startNum < endNum)
+					{
+						if (noOfNumbers == endNum && startNum == endNum - 1) {
+
+							MessageBox::Show("Starting Number Cannot be one or less than Ending Number while Number of Numbers is equal to Ending Number", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						else if (endNum - startNum <= noOfNumbers)
+						{
+							MessageBox::Show("Range between Starting Number and Ending Number cannot be less than Number of Numbers without Duplicates", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						else
+						{
+
+							do
+							{
+								std::uniform_int_distribution<> dist(startNum, endNum);
+								randNumber = dist(gen);
+								if (!(cliext::find(numbers.begin(), numbers.end(), randNumber) != numbers.end()))
+								{
+									numbers[i] = randNumber;
+									break;
+
+								}
+
+
+
+							} while (cliext::find(numbers.begin(), numbers.end(), randNumber) != numbers.end());
+
+							numbers.push_back(randNumber);
+							txtResults->AppendText(numbers[i].ToString());
+							txtResults->AppendText("  ");
+
+						}
+
+					}
+
+					else
+					{
+						MessageBox::Show("Number of Numbers and Starting Number Cannot exceed Ending Number without duplicates", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+						return;
+					}
+
+				}
+
+
+			}
+		}
+		else
+		{
+			MessageBox::Show("Starting Number Cannot be more or equal to Ending Number", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		   
+					
+		}
+	
+
+
+	if (rbLetters->Checked == true)
+	{
+		if (chDupLetters->Checked == true) {
+
+			MessageBox::Show("Dups allowed");
+		}
+		else
+		{
+			MessageBox::Show("No Dups allowed");
+		}
+
 	}
 }
 };
