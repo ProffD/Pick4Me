@@ -106,7 +106,7 @@ namespace Pick4Me {
 		String^ startL;
 		String^ endL;
 		cliext::vector<int> numbers;
-		cliext::vector<int> letters;
+		cliext::vector<String^> letters;
 
 
 		/// <summary>
@@ -555,8 +555,9 @@ private: System::Void btnGenerate_Click(System::Object^  sender, System::EventAr
 		startNum = static_cast<int>(numStartNumber->Value);
 		endNum = static_cast<int>(numEndNumber->Value);
 		noOfNumbers = static_cast<int>(numNumber->Value);
+		
 		numbers.clear();
-		numbers.erase(remove(numbers.begin(), numbers.end(), 0), numbers.end());
+		//numbers.erase(remove(numbers.begin(), numbers.end(), 0), numbers.end());
 		numbers.resize(noOfNumbers);
 		txtResults->Clear();
 		auto seed(std::chrono::system_clock::now().time_since_epoch().count());
@@ -582,7 +583,7 @@ private: System::Void btnGenerate_Click(System::Object^  sender, System::EventAr
 							MessageBox::Show("Starting Number Cannot be one or less than Ending Number while Number of Numbers is equal to Ending Number", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
 							return;
 						}
-						else if (endNum - startNum <= noOfNumbers)
+						else if (endNum - startNum < noOfNumbers)
 						{
 							MessageBox::Show("Range between Starting Number and Ending Number cannot be less than Number of Numbers without Duplicates", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
 							return;
@@ -631,20 +632,99 @@ private: System::Void btnGenerate_Click(System::Object^  sender, System::EventAr
 		}
 		   
 					
-		}
+    }
 	
 
 
 	if (rbLetters->Checked == true)
 	{
-		if (chDupLetters->Checked == true) {
+		try {
+			startL = static_cast<String^>(cmbStart->SelectedItem);
+			endL = static_cast<String^>(cmbEnd->SelectedItem);
 
-			MessageBox::Show("Dups allowed");
+		}
+		catch (NullReferenceException^) {
+			MessageBox::Show("Start and End Letter cannot be null\nPlease Select Letters from dropdown list", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}		
+		array<String^>^ alphabets = { "*","A","B","C","D", "E", "F", "G", "H","I", "J", "K", "L","M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Y", "Z" };
+		int low = Array::IndexOf(alphabets, startL);
+		int high = Array::IndexOf(alphabets, endL);
+		
+		noOfLetters = static_cast<int>(numLetters->Value);
+		letters.clear();
+		letters.erase(remove(letters.begin(), letters.end(), 0), letters.end());
+		letters.resize(noOfLetters);
+		txtResults->Clear();
+		auto seed(std::chrono::system_clock::now().time_since_epoch().count());
+		std::mt19937 gen(seed);
+		if (startL < endL)
+		{
+			std::uniform_int_distribution<> dist(low, high);
+
+			for (int i = 0; i < noOfLetters; i++) {
+				if (chDupLetters->Checked == true) {
+					randNumber = dist(gen);
+					txtResults->AppendText(alphabets[randNumber]);
+					txtResults->AppendText("  ");
+				}
+				else
+				{
+
+					if (noOfLetters <= high && low < high)
+					{
+						if (noOfLetters == high && low == high - 1) {
+
+							MessageBox::Show("Starting Letter Cannot be one or less than Ending Letter while Number of Letters is equal to Ending Letter", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						else if (high - low < noOfLetters)
+						{
+							MessageBox::Show("Range between Starting Letter and Ending Letter cannot be less than Number of Letters without Duplicates", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+							return;
+						}
+						else
+						{
+
+							do
+							{
+								std::uniform_int_distribution<> dist(low, high);
+								randNumber = dist(gen);
+								if (!(cliext::find(letters.begin(), letters.end(), alphabets[randNumber]) != letters.end()))
+								{
+									letters[i] = alphabets[randNumber];
+									break;
+
+								}
+
+
+
+							} while (cliext::find(letters.begin(), letters.end(), alphabets[randNumber]) != letters.end());
+
+							letters.push_back(alphabets[randNumber]);
+							txtResults->AppendText(letters[i]);
+							txtResults->AppendText("  ");
+
+						}
+
+					}
+
+					else
+					{
+						MessageBox::Show("Number of Letters and Starting Letter Cannot exceed Ending Letter without duplicates", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+						return;
+					}
+
+				}
+
+
+			}
 		}
 		else
 		{
-			MessageBox::Show("No Dups allowed");
+			MessageBox::Show("Starting Letter Cannot be more or equal to Ending Letter", "Invalid Input Bounds", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
 		}
+
 
 	}
 }
