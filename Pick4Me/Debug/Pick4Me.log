@@ -5,4 +5,5 @@ d:\his stuff\projects\visual studio projects\pick4me\pick4me\pick4me\quickpick.h
 d:\his stuff\projects\visual studio projects\pick4me\pick4me\pick4me\quickpick.h(564): warning C4244: 'argument': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
 d:\his stuff\projects\visual studio projects\pick4me\pick4me\pick4me\quickpick.h(659): warning C4244: 'argument': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
   Generating Code...
+  .NETFramework,Version=v4.5.AssemblyAttributes.cpp
   Pick4Me.vcxproj -> D:\His Stuff\Projects\Visual Studio Projects\Pick4Me\Pick4Me\Debug\Pick4Me.exe
